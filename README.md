@@ -3,7 +3,7 @@
 ## Key requirement: A company need to log employees overtime hours.
 - Post -> date:date rationale:text
 -	(Done) User -> Devise
-- AdminUser -> STI(Single Table Inheritance)
+- (Done) AdminUser -> STI(Single Table Inheritance)
 
 ## Features:
 - Approval workflow
@@ -14,3 +14,7 @@
 
 ## UI:
 - Bootstrap -> formating
+
+##Test Driven Development Status:
+- User:
+	+ Creation of User
