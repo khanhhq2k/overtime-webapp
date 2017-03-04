@@ -1,4 +1,6 @@
 # Overtime App
+
+## Key requirement: A company need to log employees overtime hours.
 - Post -> date:date rationale:text
 - User -> Devise
 - AdminUser -> STI
