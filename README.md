@@ -18,3 +18,6 @@
 ##Test Driven Development Status:
 - User:
 	+ Creation of User
+
+##Refactor to-dos:
+- User association integration test in post_spec.rb
