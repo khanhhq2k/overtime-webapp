@@ -1,7 +1,7 @@
 # Overtime App
 
 ## Key requirement: A company need to log employees overtime hours.
-- Post -> date:date rationale:text
+- (Done) Post -> date:date rationale:text
 -	(Done) User -> Devise
 - (Done) AdminUser -> STI(Single Table Inheritance)
 
@@ -13,11 +13,13 @@
 - Need to be documented of employee did not log overtime
 
 ## UI:
-- Bootstrap -> formating
+- (Done) Bootstrap -> formating
 
 ##Test Driven Development Status:
 - User:
-	+ Creation of User
+	+ (Done) Creation of User
+- Post:
+	+ Edit/Update post
 
 ##Refactor to-dos:
 - User association integration test in post_spec.rb
