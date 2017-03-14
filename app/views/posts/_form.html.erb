@@ -1,0 +1,6 @@
+<%= form_for @post do |f| %>
+  <%= f.date_field :date %>
+  <%= f.text_area :rationale %>
+
+  <%= f.submit @post.new_record? ? 'Save' : "Update", id: "submit_post" %>
+<% end %>
