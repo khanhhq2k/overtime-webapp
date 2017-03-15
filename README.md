@@ -25,3 +25,4 @@
 
 ##Refactor to-dos:
 - User association integration test in post_spec.rb
+- (DONE) Remove Sign-up function
