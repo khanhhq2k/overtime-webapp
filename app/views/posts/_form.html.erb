@@ -1,6 +1,23 @@
-<%= form_for @post do |f| %>
-  <%= f.date_field :date %>
-  <%= f.text_area :rationale %>
+<%= form_for(@post, :html => {class: "form", role: "form"}) do |f| %>
+  <div class="form-group">
+    <div class="control-label">
+      <%= f.label :date %>
+    </div>
+    <div>
+      <%= f.date_field :date, class: "form-control" %>
+    </div>
+  </div>
 
-  <%= f.submit @post.new_record? ? 'Save' : "Update", id: "submit_post" %>
+  <div class="form-group">
+    <div class="control-label">
+      <%= f.label :rationale %>
+    </div>
+    <div>
+      <%= f.text_area :rationale, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit @post.new_record? ? 'Save' : "Update", id: "submit_post", class: "btn btn-primary" %>
+  </div>
 <% end %>
