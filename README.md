@@ -14,6 +14,8 @@
 
 ## UI:
 - (Done) Bootstrap -> formating
+- Icon from FontAwesome
+- Update bootstrap style for forms
 
 ##Test Driven Development Status:
 - User:
