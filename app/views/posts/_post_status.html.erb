@@ -1,0 +1,13 @@
+<div class="form-group inline-radio">
+  <%= f.label :status_submitted, class: "checkbox-inline" do %>
+    <%= f.radio_button :status, 'submitted' %> Submitted
+  <% end %>
+
+  <%= f.label :status_approved, class: "checkbox-inline" do %>
+    <%= f.radio_button :status, 'approved' %> Approved
+  <% end %>
+
+  <%= f.label :status_rejected, class: "checkbox-inline" do %>
+    <%= f.radio_button :status, 'rejected' %> Rejected
+  <% end %>
+</div>

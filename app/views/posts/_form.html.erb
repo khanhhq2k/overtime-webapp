@@ -22,20 +22,7 @@
     </div>
   </div>
 
-  <div class="form-group inline-radio">
-
-    <%= f.label :status_submitted, class: "checkbox-inline" do %>
-      <%= f.radio_button :status, 'submitted' %> Submitted
-    <% end %>
-
-    <%= f.label :status_approved, class: "checkbox-inline" do %>
-      <%= f.radio_button :status, 'approved' %> Approved
-    <% end %>
-
-    <%= f.label :status_rejected, class: "checkbox-inline" do %>
-      <%= f.radio_button :status, 'rejected' %> Rejected
-    <% end %>
-  </div>
+  <%= render partial: 'post_status', locals: {f: f} if ADMIN_USER_TYPES.include?(current_user.type) %>
 
   <div class="form-group">
     <%= f.submit @post.new_record? ? 'Save' : "Update", id: "submit_post", class: "btn btn-primary btn-block" %>
