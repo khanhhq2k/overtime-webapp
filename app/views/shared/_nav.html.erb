@@ -19,7 +19,7 @@
       <ul class="dropdown-menu">
         <% if ADMIN_USER_TYPES.include? current_user.try(:type) %>
           <li>
-            <%= link_to "ToDO: Admin Dashboard", root_path %>
+            <%= link_to "Admin Dashboard", admin_root_path %>
           </li>
           <li class="divider"></li>
         <% end %>
