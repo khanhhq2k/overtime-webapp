@@ -19,8 +19,8 @@ describe 'navigate' do
     end
 
     it 'has a list of posts' do
-      post1 = FactoryGirl.create(:post)
-      post2 = FactoryGirl.create(:second_post)
+      FactoryGirl.create(:post, user_id: @user.id)
+      FactoryGirl.create(:second_post, user_id: @user.id)
 
       visit posts_path
       expect(page).to have_content(/Sample|data/)
@@ -39,20 +39,20 @@ describe 'navigate' do
     it 'can be created from new page' do
 
       fill_in 'post[date]', with: Date.today
-      fill_in 'post[rationale]', with: "my rationale"
+      fill_in 'post[rationale]', with: 'my rationale'
 
-      click_on "Save"
+      click_on 'Save'
 
-      expect(page).to have_content("my rationale")
+      expect(page).to have_content('my rationale')
     end
 
     it 'will have a user associated with' do
       fill_in 'post[date]', with: Date.today
-      fill_in 'post[rationale]', with: "User Association"
+      fill_in 'post[rationale]', with: 'User Association'
 
-      click_on "Save"
+      click_on 'Save'
 
-      expect(User.last.posts.last.rationale).to eq("User Association")
+      expect(User.last.posts.last.rationale).to eq('User Association')
     end
 
   end
@@ -67,7 +67,7 @@ describe 'navigate' do
 
   describe 'delete' do
     it 'can be deleted' do
-      @post = FactoryGirl.create(:post)
+      @post = FactoryGirl.create(:post, user_id: @user.id)
       visit posts_path
       click_link "delete_post_#{@post.id}"
     end
@@ -75,10 +75,10 @@ describe 'navigate' do
 
   describe 'edit' do
     before do
-      @post = FactoryGirl.create(:post)
+      @post = FactoryGirl.create(:post, user_id: @user.id)
     end
     it 'can be reached by clicking edit button on index page' do
-      @post = FactoryGirl.create(:post)
+      @post = FactoryGirl.create(:post, user_id: @user.id)
       visit posts_path
 
       click_link "edit_post_#{@post.id}"
@@ -89,9 +89,19 @@ describe 'navigate' do
     it 'can be edited' do
       visit edit_post_path(@post)
       fill_in 'post[date]', with: Date.today
-      fill_in 'post[rationale]', with: "Edited content"
-      click_button "submit_post"
+      fill_in 'post[rationale]', with: 'Edited content'
+      click_button 'submit_post'
 
+      expect(page).to have_content('Edited content')
+    end
+
+    it 'cannot be edited by a non authorized user' do
+      logout(:user)
+      non_authorized_user = FactoryGirl.create(:non_authorized_user)
+      login_as(non_authorized_user, :scope => :user)
+      visit edit_post_path(@post)
+
+      expect(current_path).to eq(root_path)
     end
   end
 end
