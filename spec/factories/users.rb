@@ -10,6 +10,14 @@ FactoryGirl.define do
     last_name 'Snow'
   end
 
+  factory :other_user, class: 'User' do
+    email {generate :email}
+    password 'asdasd'
+    password_confirmation 'asdasd'
+    first_name 'John'
+    last_name 'Snow'
+  end
+
   factory :admin_user, class: 'AdminUser' do
     email {generate :email}
     password 'asdasd'

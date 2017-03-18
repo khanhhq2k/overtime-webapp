@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 describe 'navigate' do
+  let(:user) { FactoryGirl.create(:user) }
+
+  let(:post) { FactoryGirl.create(:post, user_id: user.id) }
+
   before do
-    @user = FactoryGirl.create(:user)
-    login_as(@user, :scope => :user)
+    login_as(user, scope: :user)
   end
 
   describe 'index' do
@@ -19,11 +22,17 @@ describe 'navigate' do
     end
 
     it 'has a list of posts' do
-      FactoryGirl.create(:post, user_id: @user.id)
-      FactoryGirl.create(:second_post, user_id: @user.id)
-
+      FactoryGirl.create(:post, user_id: user.id)
       visit posts_path
-      expect(page).to have_content(/Sample|data/)
+      expect(page).to have_content(/Sample/)
+    end
+
+    it 'has a scope that only post creators can see their posts' do
+      other_user = FactoryGirl.create(:other_user)
+      post_of_other_user = Post.create(date: Date.today, rationale: 'this should not be seen', user_id: other_user.id)
+      visit posts_path
+
+      expect(page).to_not  have_content(/this should not be seen/)
     end
   end
 
@@ -67,27 +76,32 @@ describe 'navigate' do
 
   describe 'delete' do
     it 'can be deleted' do
-      @post = FactoryGirl.create(:post, user_id: @user.id)
+      logout(:user)
+      delete_user = FactoryGirl.create(:user)
+      login_as(delete_user, :scope => :user)
+      post_to_delete = Post.create(date: Date.today, rationale: 'asdf', user_id: delete_user.id)
       visit posts_path
-      click_link "delete_post_#{@post.id}"
+      click_link "delete_post_#{post_to_delete.id}"
+
+      expect(page.status_code).to eq(200)
     end
   end
 
   describe 'edit' do
-    before do
-      @post = FactoryGirl.create(:post, user_id: @user.id)
-    end
     it 'can be reached by clicking edit button on index page' do
-      @post = FactoryGirl.create(:post, user_id: @user.id)
-      visit posts_path
+      logout(:user)
+      edit_user = FactoryGirl.create(:user)
+      login_as(edit_user, :scope => :user)
+      post_to_edit = Post.create(date: Date.today, rationale: 'asdf', user_id: edit_user.id)
 
-      click_link "edit_post_#{@post.id}"
+      visit posts_path
+      click_link "edit_post_#{post_to_edit.id}"
       expect(page.status_code).to eq(200)
 
     end
 
     it 'can be edited' do
-      visit edit_post_path(@post)
+      visit edit_post_path(post)
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'Edited content'
       click_button 'submit_post'
@@ -99,7 +113,7 @@ describe 'navigate' do
       logout(:user)
       non_authorized_user = FactoryGirl.create(:non_authorized_user)
       login_as(non_authorized_user, :scope => :user)
-      visit edit_post_path(@post)
+      visit edit_post_path(post)
 
       expect(current_path).to eq(root_path)
     end
