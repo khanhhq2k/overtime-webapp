@@ -29,7 +29,7 @@ describe 'navigate' do
 
     it 'has a scope that only post creators can see their posts' do
       other_user = FactoryGirl.create(:other_user)
-      post_of_other_user = Post.create(date: Date.today, rationale: 'this should not be seen', user_id: other_user.id)
+      post_of_other_user = Post.create(date: Date.today, rationale: 'this should not be seen', user_id: other_user.id, overtime_request: 2)
       visit posts_path
 
       expect(page).to_not  have_content(/this should not be seen/)
@@ -46,18 +46,17 @@ describe 'navigate' do
     end
 
     it 'can be created from new page' do
-
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'my rationale'
+      fill_in 'post[overtime_request]', with: 5
 
-      click_on 'Save'
-
-      expect(page).to have_content('my rationale')
+      expect { click_on 'Save' }.to change(Post, :count).by(1)
     end
 
     it 'will have a user associated with' do
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'User Association'
+      fill_in 'post[overtime_request]', with: 5
 
       click_on 'Save'
 
@@ -79,7 +78,7 @@ describe 'navigate' do
       logout(:user)
       delete_user = FactoryGirl.create(:user)
       login_as(delete_user, :scope => :user)
-      post_to_delete = Post.create(date: Date.today, rationale: 'asdf', user_id: delete_user.id)
+      post_to_delete = Post.create(date: Date.today, rationale: 'asdf', user_id: delete_user.id, overtime_request: 2)
       visit posts_path
       click_link "delete_post_#{post_to_delete.id}"
 
@@ -92,7 +91,7 @@ describe 'navigate' do
       logout(:user)
       edit_user = FactoryGirl.create(:user)
       login_as(edit_user, :scope => :user)
-      post_to_edit = Post.create(date: Date.today, rationale: 'asdf', user_id: edit_user.id)
+      post_to_edit = Post.create(date: Date.today, rationale: 'asdf', user_id: edit_user.id, overtime_request: 2)
 
       visit posts_path
       click_link "edit_post_#{post_to_edit.id}"
@@ -104,6 +103,7 @@ describe 'navigate' do
       visit edit_post_path(post)
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'Edited content'
+      fill_in 'post[overtime_request]', with: 2
       click_button 'submit_post'
 
       expect(page).to have_content('Edited content')
